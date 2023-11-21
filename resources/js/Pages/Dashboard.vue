@@ -1,16 +1,21 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import UploadItem from '@/Components/Uploads/UploadItem.vue'
+import axios from 'axios'
 
 const uploads = ref([])
 
 const handleDroppedFiles = (files) => {
     Array.from(files).forEach((file) => {
-        uploads.value.unshift({
-            id: 1,
-            title: file.name,
+        axios.post(route('videos.store'), {
+            title: file.name
+        }).then((response) => {
+            uploads.value.unshift({
+                id: response.data.id,
+                title: file.name,
+            })
         })
     })
 }
