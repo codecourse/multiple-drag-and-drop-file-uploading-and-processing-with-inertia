@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VideoFileStoreRequest;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -11,7 +12,7 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class VideoFileStoreController extends Controller
 {
-    public function __invoke(Request $request, Video $video)
+    public function __invoke(VideoFileStoreRequest $request, Video $video)
     {
         $receiver = new FileReceiver(
             UploadedFile::fake()->createWithContent('file', $request->getContent()),
