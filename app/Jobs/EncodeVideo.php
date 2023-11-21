@@ -11,7 +11,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use ProtoneMedia\LaravelFFMpeg\Filesystem\Media;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class EncodeVideo implements ShouldQueue
@@ -42,6 +44,14 @@ class EncodeVideo implements ShouldQueue
             ->inFormat(new \FFMpeg\Format\Video\X264())
             ->onProgress(function ($percentage) {
                 event(new EncodeVideoProgress($this->video, $percentage));
+            })
+            ->afterSaving(function ($exporter, Media $media) {
+                Storage::disk('public')->delete($this->video->video_path);
+
+                $this->video->update([
+                    'encoded' => true,
+                    'video_path' => $media->getPath()
+                ]);
             })
             ->save('videos/' . Str::uuid() . '.mp4');
     }
