@@ -20,8 +20,17 @@ const form = useForm({
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-6 text-gray-900">
         <div class="flex space-x-6">
-            <div>
-                left
+            <div class="max-w-[240px] w-full space-y-3">
+
+                <div class="space-y-1" v-if="upload.uploading">
+                    <div class="bg-gray-100 shadow-inner h-3 rounded overflow-hidden">
+                        <div class="bg-blue-500 h-full" v-bind:style="{ width: `${upload.uploadProgress}%` }"></div>
+                    </div>
+                    <div class="text-sm">
+                        Uploading
+                    </div>
+                </div>
+
             </div>
 
             <form class="flex-grow space-y-6" v-on:submit.prevent="form.patch(route('videos.update', upload.id), { preserveScroll: true, preserveState: true })">

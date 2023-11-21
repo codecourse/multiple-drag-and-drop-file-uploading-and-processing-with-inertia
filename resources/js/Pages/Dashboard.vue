@@ -8,6 +8,10 @@ import { createUpload } from '@mux/upchunk'
 
 const uploads = ref([])
 
+const getUploadById = (id) => {
+    return uploads.value.find((upload) => upload.id === id)
+}
+
 const startChunkedUpload = (file, id) => {
     const upload = createUpload({
         endpoint: route('videos.file.store', id),
@@ -17,6 +21,14 @@ const startChunkedUpload = (file, id) => {
         method: 'post',
         file: file,
         chunkSize: 30 * 1024 // 30mb
+    })
+
+    upload.on('progress', (p) => {
+        getUploadById(id).uploadProgress = p.detail
+    })
+
+    upload.on('success', () => {
+        getUploadById(id).uploading = false
     })
 
     return upload
@@ -30,7 +42,9 @@ const handleDroppedFiles = (files) => {
             uploads.value.unshift({
                 id: response.data.id,
                 title: file.name,
-                file: startChunkedUpload(file, response.data.id)
+                file: startChunkedUpload(file, response.data.id),
+                uploading: true,
+                uploadProgress: 0
             })
         })
     })
