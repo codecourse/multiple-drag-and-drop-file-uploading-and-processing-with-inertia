@@ -12,6 +12,14 @@ const getUploadById = (id) => {
     return uploads.value.find((upload) => upload.id === id)
 }
 
+const pauseUpload = (id) => {
+    getUploadById(id).file.pause()
+}
+
+const resumeUpload = (id) => {
+    getUploadById(id).file.resume()
+}
+
 const cancelUpload = (id) => {
     getUploadById(id).file.abort()
 
@@ -88,6 +96,8 @@ const handleDroppedFiles = (files) => {
                         :key="upload.id"
                         :upload="upload"
                         v-on:cancel="cancelUpload"
+                        v-on:pause="pauseUpload"
+                        v-on:resume="resumeUpload"
                     />
                 </div>
             </div>

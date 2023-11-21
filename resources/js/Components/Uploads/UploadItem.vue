@@ -34,7 +34,16 @@ const emit = defineEmits()
                 </div>
 
                 <div class="flex items-center space-x-3" v-if="upload.uploading">
-                    <button class="text-blue-500 text-sm font-medium" v-on:click="emit('cancel', upload.id)">Cancel upload</button>
+                    <button class="text-blue-500 text-sm font-medium" v-on:click="emit('pause', upload.id)" v-if="!upload.file.paused">
+                        Pause
+                    </button>
+                    <button class="text-blue-500 text-sm font-medium" v-on:click="emit('resume', upload.id)" v-if="upload.file.paused">
+                        Resume
+                    </button>
+
+                    <button class="text-blue-500 text-sm font-medium" v-on:click="emit('cancel', upload.id)">
+                        Cancel upload
+                    </button>
                 </div>
 
             </div>
