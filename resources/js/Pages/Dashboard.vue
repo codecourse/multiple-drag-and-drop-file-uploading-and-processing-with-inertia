@@ -17,6 +17,15 @@ onMounted(() => {
 
             upload.encoding = true
         })
+        .listen('EncodeVideoProgress', (e) => {
+            const upload = getUploadById(e.video_id)
+
+            if (!upload) {
+                return
+            }
+
+            upload.encodingProgress = e.percentage
+        })
 })
 
 const uploads = ref([])
@@ -80,6 +89,7 @@ const handleDroppedFiles = (files) => {
                 uploading: true,
                 uploadProgress: 0,
                 encoding: false,
+                encodingProgress: 0
             })
         })
     })

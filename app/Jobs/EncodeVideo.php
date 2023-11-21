@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\EncodeVideoProgress;
 use App\Events\EncodeVideoStart;
 use App\Models\Video;
 use Illuminate\Bus\Queueable;
@@ -39,6 +40,9 @@ class EncodeVideo implements ShouldQueue
             ->export()
             ->toDisk('public')
             ->inFormat(new \FFMpeg\Format\Video\X264())
+            ->onProgress(function ($percentage) {
+                event(new EncodeVideoProgress($this->video, $percentage));
+            })
             ->save('videos/' . Str::uuid() . '.mp4');
     }
 }

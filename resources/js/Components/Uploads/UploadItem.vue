@@ -26,7 +26,7 @@ const emit = defineEmits()
 
                 <div class="space-y-1" v-if="upload.encoding">
                     <div class="bg-gray-100 shadow-inner h-3 rounded overflow-hidden">
-                        <div class="bg-green-500 h-full" style="width: 50%;"></div>
+                        <div class="bg-green-500 h-full" v-bind:style="{ width: `${upload.encodingProgress}%` }"></div>
                     </div>
                     <div class="text-sm">
                         Encoding
