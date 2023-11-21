@@ -15,4 +15,9 @@ class Video extends Model
         'video_path',
         'encoded'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

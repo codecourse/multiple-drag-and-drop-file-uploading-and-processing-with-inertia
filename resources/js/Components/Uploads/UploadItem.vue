@@ -24,6 +24,15 @@ const emit = defineEmits()
         <div class="flex space-x-6">
             <div class="max-w-[240px] w-full space-y-3">
 
+                <div class="space-y-1" v-if="upload.encoding">
+                    <div class="bg-gray-100 shadow-inner h-3 rounded overflow-hidden">
+                        <div class="bg-green-500 h-full" style="width: 50%;"></div>
+                    </div>
+                    <div class="text-sm">
+                        Encoding
+                    </div>
+                </div>
+
                 <div class="space-y-1" v-if="upload.uploading">
                     <div class="bg-gray-100 shadow-inner h-3 rounded overflow-hidden">
                         <div class="bg-blue-500 h-full" v-bind:style="{ width: `${upload.uploadProgress}%` }"></div>

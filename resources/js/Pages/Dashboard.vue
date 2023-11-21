@@ -7,9 +7,15 @@ import axios from 'axios'
 import { createUpload } from '@mux/upchunk'
 
 onMounted(() => {
-    Echo.channel('videos')
-        .listen('Test', (e) => {
-            console.log(e)
+    Echo.private(`users.${usePage().props.auth.user.id}`)
+        .listen('EncodeVideoStart', (e) => {
+            const upload = getUploadById(e.video_id)
+
+            if (!upload) {
+                return
+            }
+
+            upload.encoding = true
         })
 })
 
@@ -72,7 +78,8 @@ const handleDroppedFiles = (files) => {
                 title: file.name,
                 file: startChunkedUpload(file, response.data.id),
                 uploading: true,
-                uploadProgress: 0
+                uploadProgress: 0,
+                encoding: false,
             })
         })
     })

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoFileStoreRequest;
+use App\Jobs\EncodeVideo;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -34,5 +35,7 @@ class VideoFileStoreController extends Controller
         $video->update([
             'video_path' => $file->storeAs('videos', Str::uuid(), 'public')
         ]);
+
+        EncodeVideo::dispatch($video);
     }
 }
