@@ -18,6 +18,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "@mux/upchunk": "^3.3.0"
+        "@mux/upchunk": "^3.3.0",
+        "laravel-echo": "^1.15.3",
+        "pusher-js": "^8.3.0"
     }
 }

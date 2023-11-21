@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Test;
 use Illuminate\Http\Request;
 
 class VideoStoreController extends Controller

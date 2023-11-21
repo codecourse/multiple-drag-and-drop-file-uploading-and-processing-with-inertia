@@ -1,10 +1,17 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import UploadItem from '@/Components/Uploads/UploadItem.vue'
 import axios from 'axios'
 import { createUpload } from '@mux/upchunk'
+
+onMounted(() => {
+    Echo.channel('videos')
+        .listen('Test', (e) => {
+            console.log(e)
+        })
+})
 
 const uploads = ref([])
 const filesBeingDragged = ref(false)
