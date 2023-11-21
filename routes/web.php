@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VideoFileStoreController;
 use App\Http\Controllers\VideoStoreController;
 use App\Http\Controllers\VideoUpdateController;
 use Illuminate\Foundation\Application;
@@ -34,6 +35,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::post('/videos', VideoStoreController::class)->name('videos.store');
     Route::patch('/videos/{video}', VideoUpdateController::class)->name('videos.update');
+    Route::post('/videos/{video}/file', VideoFileStoreController::class)->name('videos.file.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

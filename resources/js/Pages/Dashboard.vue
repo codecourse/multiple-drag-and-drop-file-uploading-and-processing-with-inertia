@@ -1,11 +1,26 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue'
 import UploadItem from '@/Components/Uploads/UploadItem.vue'
 import axios from 'axios'
+import { createUpload } from '@mux/upchunk'
 
 const uploads = ref([])
+
+const startChunkedUpload = (file, id) => {
+    const upload = createUpload({
+        endpoint: route('videos.file.store', id),
+        headers: {
+            'X-CSRF-TOKEN': usePage().props.csrf_token
+        },
+        method: 'post',
+        file: file,
+        chunkSize: 30 * 1024 // 30mb
+    })
+
+    return upload
+}
 
 const handleDroppedFiles = (files) => {
     Array.from(files).forEach((file) => {
@@ -15,6 +30,7 @@ const handleDroppedFiles = (files) => {
             uploads.value.unshift({
                 id: response.data.id,
                 title: file.name,
+                file: startChunkedUpload(file, response.data.id)
             })
         })
     })
