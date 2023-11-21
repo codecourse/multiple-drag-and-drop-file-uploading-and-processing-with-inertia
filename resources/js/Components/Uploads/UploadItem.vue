@@ -14,6 +14,8 @@ const form = useForm({
     title: props.upload.title,
     description: ''
 })
+
+const emit = defineEmits()
 </script>
 
 <template>
@@ -29,6 +31,10 @@ const form = useForm({
                     <div class="text-sm">
                         Uploading
                     </div>
+                </div>
+
+                <div class="flex items-center space-x-3" v-if="upload.uploading">
+                    <button class="text-blue-500 text-sm font-medium" v-on:click="emit('cancel', upload.id)">Cancel upload</button>
                 </div>
 
             </div>

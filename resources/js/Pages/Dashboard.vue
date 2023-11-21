@@ -12,6 +12,18 @@ const getUploadById = (id) => {
     return uploads.value.find((upload) => upload.id === id)
 }
 
+const cancelUpload = (id) => {
+    getUploadById(id).file.abort()
+
+    router.delete(route('videos.destroy', id), {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            uploads.value = uploads.value.filter(upload => upload.id !== id)
+        }
+    })
+}
+
 const startChunkedUpload = (file, id) => {
     const upload = createUpload({
         endpoint: route('videos.file.store', id),
@@ -71,7 +83,12 @@ const handleDroppedFiles = (files) => {
                 </div>
 
                 <div class="space-y-3">
-                    <UploadItem v-for="upload in uploads" :key="upload.id" :upload="upload" />
+                    <UploadItem
+                        v-for="upload in uploads"
+                        :key="upload.id"
+                        :upload="upload"
+                        v-on:cancel="cancelUpload"
+                    />
                 </div>
             </div>
         </div>
